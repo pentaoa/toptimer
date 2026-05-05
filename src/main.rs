@@ -129,7 +129,7 @@ q 返回"
         (Lang::Ja, "menu_quit") => "終了",
         (Lang::Ja, "menu_help") => "↑/↓ 選択 · Enter 決定 · q 終了",
         (Lang::Ja, "config") => "設定",
-        (Lang::Ja, "home_tz") => "メイン時区",
+        (Lang::Ja, "home_tz") => "メインタイムゾーン",
         (Lang::Ja, "precision") => "表示精度",
         (Lang::Ja, "no_timers") => {
             "タイマーがありません。
@@ -146,17 +146,19 @@ q 戻る"
         (Lang::Ja, "timer_footer") => "q 戻る · r 再読み込み · ←/→ フォント: {font} · ↑/↓ タイマー",
         (Lang::Ja, "add_title") => "タイトル",
         (Lang::Ja, "add_target") => "目標時刻",
-        (Lang::Ja, "timezone") => "時区",
+        (Lang::Ja, "timezone") => "タイムゾーン",
         (Lang::Ja, "note") => "メモ",
         (Lang::Ja, "save") => "保存",
         (Lang::Ja, "add_hint_time") => "形式: YYYY-MM-DD HH:MM、例 2026-05-05 23:59",
-        (Lang::Ja, "add_hint_tz") => "時区行で ←/→ を使って AOE、UTC、中国、米国時区などを選択。",
+        (Lang::Ja, "add_hint_tz") => {
+            "タイムゾーン行で ←/→ を使って AOE、UTC、中国、米国タイムゾーンなどを選択。"
+        }
         (Lang::Ja, "add_footer") => "Tab/↑/↓ 移動 · Enter 次/保存 · Esc 戻る",
         (Lang::Ja, "added") => "タイマーを追加しました",
         (Lang::Ja, "settings_hint") => {
             "←/→ で変更。~/.config/toptimer/config.json に保存されます。"
         }
-        (Lang::Ja, "default_add_tz") => "追加時の既定時区",
+        (Lang::Ja, "default_add_tz") => "追加時の既定タイムゾーン",
         (Lang::Ja, "language") => "言語",
         (Lang::Ja, "settings_footer") => "q/Esc 戻る",
         (Lang::Ja, "config_title") => "設定",
@@ -662,10 +664,13 @@ fn draw_menu(frame: &mut Frame, app: &App) {
         .split(inner);
     frame.render_widget(Paragraph::new(title_art_lines()), rows[0]);
     let summary = format!(
-        "配置: {}\n主时区: {}\n精度: {}",
+        "{}: {}\n{}: {}\n{}: {}",
+        tr(lang, "config"),
         config_path().display(),
+        tr(lang, "home_tz"),
         app.config.settings.home_timezone,
-        precision_label_lang(&app.config.settings.display_precision, app.lang())
+        tr(lang, "precision"),
+        precision_label_lang(&app.config.settings.display_precision, lang)
     );
     frame.render_widget(
         Paragraph::new(summary).alignment(Alignment::Center),
